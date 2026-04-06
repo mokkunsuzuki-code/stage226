@@ -1,146 +1,113 @@
-# QSP Stage227 – Attack Simulation with Continuous Verification
+# QSP Stage226: Minimal Executable PoC
 
 ## Overview
 
-Stage227 extends the minimal executable PoC (Stage226) by introducing **attack simulation** and **continuous verification via GitHub Actions**.
+Stage226 introduces a **minimal executable Proof of Concept (PoC)**.
 
-This stage demonstrates not only that the system works under normal conditions, but also that it **detects integrity violations under adversarial conditions**.
+This stage marks a critical transition:
 
----
+- From **structure and explanation**
+- To **execution and observable behavior**
 
-## Key Concept
+The PoC demonstrates that the system can:
 
-
-Normal Execution
-→ Verification Pass
-
-Tampered Execution
-→ Verification Fail (Detected)
-
+- generate keys
+- derive a shared key
+- produce verifiable evidence
+- validate execution deterministically
 
 ---
 
 ## What This Stage Proves
 
-- The system can detect **tampering of critical files**
-- Integrity violations are **deterministically detected**
-- Attack scenarios are **explicitly defined and reproducible**
-- Results are **recorded as structured evidence**
-- Verification can run **continuously via CI (GitHub Actions)**
+This is **not a production-ready protocol implementation**.
+
+Instead, it proves that:
+
+> The system is capable of executing end-to-end and producing verifiable outputs.
+
+This is the first stage where:
+
+- claims → execution → evidence → verification
+
+are connected in a runnable form.
 
 ---
 
-## Attack Simulation Model
+## Minimal Executable PoC
 
-Attack scenarios are defined in:
+### Features
 
-
-attacks/attack_scenarios.json
-
-
-Example:
-
-- Modify `claims/claims.yaml`
-- Modify `README.md`
-- Run baseline verification (no tampering)
-
-Each scenario defines:
-
-- target file
-- attack type
-- expected result (pass/fail)
+- Key generation (simulated)
+- Shared key derivation (SHA-256)
+- Evidence output (`out/poc/result.json`)
+- Verification script (`poc/verify_poc.sh`)
 
 ---
 
-## Execution
-
-### Run locally
+## Run
 
 ```bash
-./tools/run_stage227.sh
-Output
-out/attacks/attack_report.json
+bash poc/verify_poc.sh
+Example Output
+[*] Running minimal executable PoC...
+[*] Generating keys...
+[*] Deriving shared key...
+[OK] Shared key: <hex>
+[OK] Wrote evidence: out/poc/result.json
+[*] Verifying generated evidence...
+[OK] Evidence verification passed.
+[OK] PoC executed and verified successfully.
+Evidence
 
-Example:
+Generated file:
 
-{
-  "summary": {
-    "scenario_count": 3,
-    "passed": 3,
-    "failed": 0,
-    "overall_success": true
-  }
-}
-CI Integration (GitHub Actions)
+out/poc/result.json
 
-This stage includes automated execution via:
+Contains:
 
-.github/workflows/stage227-attack-simulation.yml
+execution status
+key lengths
+derived shared key
+structural validation data
+Claim Binding
 
-On every:
+This stage introduces:
 
-push
-pull request
-manual trigger
+CLAIM-POC-001
 
-The system:
+Which links:
 
-Runs attack simulation
-Verifies integrity behavior
-Uploads evidence as artifact
+PoC execution
+Evidence output
+Verification logic
+
+This extends the existing framework:
+
+Claim → Evidence → Verification
+
+into:
+
+Claim → Execution → Evidence → Verification
 Why This Matters
 
-Traditional PoC:
+Previous stages:
 
-Demonstrates functionality
+Stage224 → readable
+Stage225 → discussable
 
-Stage227:
+Stage226:
 
-Demonstrates failure detection under attack
-Provides continuous, reproducible security validation
+Executable
 
-This shifts the system from:
+This is the first step toward:
 
-"It works"
-
-to:
-
-"It fails correctly under attack — and we can prove it continuously"
-
-Security Perspective
-
-This stage introduces a minimal but important property:
-
-Tamper Detection
-Reproducible Adversarial Testing
-Evidence-based Validation
-Structure
-attacks/
-  attack_scenarios.json
-
-tools/
-  run_attack_simulation.py
-  run_stage227.sh
-
-out/
-  attacks/
-    attack_report.json
-
-.github/workflows/
-  stage227-attack-simulation.yml
-Limitations
-Simplified attack model (file tampering only)
-No network or cryptographic attack simulation yet
-Designed as minimal reproducible framework
+real PoC environments
+attack simulations
+external validation
 Next Steps
-
-Future stages may include:
-
-Cryptographic attack scenarios
-Network-level adversarial simulation
-Formal verification linkage
-Real protocol integration
+Stage227: Attack simulation
+Stage230: Real network PoC
 License
 
 MIT License
-Copyright (c) 2025
